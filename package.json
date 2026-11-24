@@ -13,5 +13,9 @@
   "dependencies": {
     "@terminal3/t3n-sdk": "^5.41.0",
     "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
   }
 }
