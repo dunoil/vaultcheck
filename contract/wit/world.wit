@@ -1,0 +1,30 @@
+// Host packages vendored from Terminal-3/trinity release testnet-v1.0.12
+// (81f207c00): host:interfaces@2.4.0 and host:tenant@2.0.0. These are the
+// three imports of the `tenant-base` world on that release. Re-vendor from the
+// release you deploy to if it changes.
+package z:agent-vault@0.1.0;
+
+// tenant-base only: no HTTP, so a stored record can never leave the enclave
+// through this contract.
+world agent-vault {
+  import host:tenant/tenant-context@2.0.0;
+  import host:interfaces/logging@2.4.0;
+  import host:interfaces/kv-store@2.4.0;
+
+  export contracts;
+}
+
+interface contracts {
+  record generic-input {
+    input:        option<list<u8>>,
+    user-profile: option<list<u8>>,
+    context:      option<list<u8>>,
+  }
+
+  // The customer saves their own record. Refused on a delegated call.
+  store:  func(req: generic-input) -> result<list<u8>, string>;
+  // Yes/no answers about the calling customer's record. Never returns a value.
+  check:  func(req: generic-input) -> result<list<u8>, string>;
+  // The customer deletes their own record. Refused on a delegated call.
+  forget: func(req: generic-input) -> result<list<u8>, string>;
+}

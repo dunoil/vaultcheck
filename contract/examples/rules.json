@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "min_age": 18,
+    "residency_in": ["GB", "IE"],
+    "kyc_verified": true,
+    "id_not_expired": true,
+    "min_monthly_income_cents": 300000,
+    "account_open_min_months": 12
+  }
+}
