@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VaultCheck, Eligibility Desk</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <span class="badge">Live on Terminal 3 testnet</span>
+  <h1>VaultCheck, Eligibility Desk</h1>
+  <p class="tag">A privacy first eligibility agent built on the Terminal 3 Developer Platform (T3N). It answers yes or no eligibility questions about a person without ever seeing that person's private data.</p>
+</header>
+
+<section>
+  <h2>What VaultCheck does</h2>
+  <ol class="steps">
+    <li>The customer stores their own private record once, inside a Terminal 3 TEE vault contract. The record never leaves the enclave in raw form.</li>
+    <li>The customer grants the VaultCheck agent exactly one function: <code>check</code>. Nothing else. The grant is scoped and time limited.</li>
+    <li>A hiring desk, payout desk, or onboarding flow asks the agent yes or no questions. The agent invokes <code>check</code> inside the enclave and returns one boolean per rule, and no values.</li>
+    <li>A call to any other function is rejected by the node before the contract runs. That rejection is proven below, from a real run.</li>
+  </ol>
+  <p class="note">This page is the public desk for the live system. Every figure on it is taken from recorded live runs (STATUS.md and flow-run-final.log in the repository). Nothing is estimated and there are no placeholder numbers.</p>
+</section>
+
+<section>
+  <h2>Live proof</h2>
+  <p>Final clean run of <code>flow.ts</code> against Terminal 3 testnet: <strong>2026-11-25T00:42:21Z to 00:42:37Z</strong> (08:42 WITA), exit code 0. The first full run, which created the organisation and the agent, ran 2026-11-25T00:39:52Z to 00:40:07Z.</p>
+  <p>Store result in the final run: <span class="proof-ok">{"stored":true}</span></p>
+  <p class="note">The stored record is the fictional example record from the repository (Alex Example). No real person's data is used on this page or in the demo flow.</p>
+</section>
+
+<section>
+  <h2>Who is involved: three DIDs</h2>
+  <table>
+    <tr><th>Role</th><th>DID</th></tr>
+    <tr>
+      <td>Customer and developer (record owner)</td>
+      <td class="did">did:t3n:f93478979727f0f1d3d3f7155232e44e908872af</td>
+    </tr>
+    <tr>
+      <td>Organisation (VaultCheck)</td>
+      <td class="did">did:t3n:694f7fffba2811bb0bea2071363025d19bbad373</td>
+    </tr>
+    <tr>
+      <td>Agent (VaultCheck Agent, keyId 0176dcd143e7442e)</td>
+      <td class="did">did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2</td>
+    </tr>
+  </table>
+  <p class="note">One recorded correction: a second key claimed from the Terminal 3 claim page turned out to be a second credential of the same account, and it resolves to the developer DID above, not to a separate agent. The acting agent is the org owned agent created with <code>createAgent</code>, exactly as the official Terminal 3 walkthrough prescribes.</p>
+</section>
+
+<section>
+  <h2>The vault contract</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Contract</td><td class="did">z:f93478979727f0f1d3d3f7155232e44e908872af:vault</td></tr>
+    <tr><td>Contract ID</td><td>1151</td></tr>
+    <tr><td>Version</td><td>0.1.0</td></tr>
+    <tr><td>Data map</td><td>Private <code>vault</code> map, readers and writers limited to the contract itself</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Latest check: six rules, booleans only</h2>
+  <p>Latest recorded check, run by the agent for the customer in the final run on 25 Nov 2026. Requirements are the rules recorded in <code>contract/examples/rules.json</code>. The contract returns one boolean per rule and no underlying values.</p>
+  <table>
+    <tr><th>Rule</th><th>Requirement</th><th>Answer</th></tr>
+    <tr><td><code>min_age</code></td><td>Age 18 or over</td><td class="answer-true">true</td></tr>
+    <tr><td><code>residency_in</code></td><td>Residency in GB or IE</td><td class="answer-true">true</td></tr>
+    <tr><td><code>kyc_verified</code></td><td>KYC verified</td><td class="answer-true">true</td></tr>
+    <tr><td><code>id_not_expired</code></td><td>ID not expired</td><td class="answer-true">true</td></tr>
+    <tr><td><code>min_monthly_income_cents</code></td><td>Monthly income at least 300000 cents</td><td class="answer-true">true</td></tr>
+    <tr><td><code>account_open_min_months</code></td><td>Account open at least 12 months</td><td class="answer-true">true</td></tr>
+  </table>
+  <p>Raw answer payload, exactly as returned:</p>
+  <p class="proof-ok">{"answers":{"account_open_min_months":true,"id_not_expired":true,"kyc_verified":true,"min_age":true,"min_monthly_income_cents":true,"residency_in":true}}</p>
+</section>
+
+<section>
+  <h2>Grant scope: check only, 90 days</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Grantee (agent)</td><td class="did">did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2</td></tr>
+    <tr><td>Contract</td><td class="did">z:f93478979727f0f1d3d3f7155232e44e908872af:vault</td></tr>
+    <tr><td>Function</td><td><code>check</code>, only this function</td></tr>
+    <tr><td>Scopes</td><td>None ([])</td></tr>
+    <tr><td>Valid from</td><td>1795567355 (2026-11-25T00:42:35Z)</td></tr>
+    <tr><td>Valid until</td><td>1803343355 (2027-02-23T00:42:35Z)</td></tr>
+    <tr><td>Window</td><td>Exactly 90 days, the platform default expiry</td></tr>
+  </table>
+  <p class="note">Read back from <code>getMemberDelegation</code> in the final run, so the window above is the grant as the platform itself reports it.</p>
+</section>
+
+<section>
+  <h2>Rejection proof: an ungranted call fails</h2>
+  <p>In the same final run, the agent invoked <code>store</code>, a function it was not granted. The node refused the call before the contract ran:</p>
+  <p class="proof-bad">InvokeError: invoke request failed: server returned HTTP 403 (status 403)</p>
+  <p>The granted <code>check</code> succeeded in the same run with the same agent balance, so this rejection is a grant decision, not a funding failure. The agent has no function that can read, change, or export the record.</p>
+</section>
+
+<section>
+  <h2>Funding ledger: what the agent cost to run</h2>
+  <p>Check calls are billed to the agent's own credit balance, and they are credit hungry. Recorded transfers from the developer balance to the agent:</p>
+  <table>
+    <tr><th>Ledger seq</th><th>Event</th><th>Credits</th></tr>
+    <tr><td>24792</td><td>Agent funded at creation</td><td>5</td></tr>
+    <tr><td>24802</td><td>Top up before a check in a later run</td><td>10</td></tr>
+    <tr><td>24808</td><td>Top up before a check in a later run</td><td>10</td></tr>
+    <tr><td>24814</td><td>Top up inside the final run, after the first check attempt returned 403</td><td>10</td></tr>
+    <tr><td></td><td><strong>Total moved to the agent, 4 recorded transfers</strong></td><td><strong>35</strong></td></tr>
+  </table>
+  <p class="note">Per the official walkthrough, a bare 403 on a granted call can also signal that the agent is out of credit. That is what happened to the first check attempt in the final run: after the seq 24814 top up, the retry passed. <code>flow.ts</code> now tops up 10 credits and retries once on a bare 403.</p>
+</section>
+
+<section>
+  <h2>Traction</h2>
+  <div class="grid">
+    <div class="metric"><div class="num">3</div><div class="label">Unique DIDs involved</div></div>
+    <div class="metric"><div class="num">1</div><div class="label">Documented checks passed</div><div class="sub">Counted only when the full answer payload is recorded</div></div>
+    <div class="metric"><div class="num">1</div><div class="label">Ungranted calls rejected</div><div class="sub">HTTP 403</div></div>
+    <div class="metric"><div class="num">35</div><div class="label">Credits moved to the agent</div><div class="sub">4 recorded transfers</div></div>
+  </div>
+  <p>Full detail, generated from the append only activity log: <a href="dashboard.html">traction dashboard</a>.</p>
+</section>
+
+<footer class="site">
+  <p>VaultCheck is an entry to the Terminal 3 Build+Scale Agent Micro Grant on DoraHacks, deadline 24 Dec 2026 23:59 UTC+8. Source: <a href="https://github.com/dunoil/vaultcheck">github.com/dunoil/vaultcheck</a>. Figures on this page come from STATUS.md and flow-run-final.log in that repository.</p>
+</footer>
+
+</div>
+</body>
+</html>

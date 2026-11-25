@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VaultCheck, Traction Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <span class="badge">Traction, real records only</span>
+  <h1>VaultCheck Traction Dashboard</h1>
+  <p class="tag">Generated from the append only activity log (<code>activity.jsonl</code>) by <code>build-traction.mjs</code> into <code>traction.json</code>. Back to the <a href="index.html">eligibility desk</a>.</p>
+  <p class="note" id="data-status">Showing the last generated values. When this page is served over HTTP, it reloads them live from traction.json.</p>
+</header>
+
+<section>
+  <h2>Headline metrics</h2>
+  <div class="grid">
+    <div class="metric"><div class="num" id="m-dids">3</div><div class="label">Unique DIDs involved</div></div>
+    <div class="metric"><div class="num" id="m-checks">1</div><div class="label">Documented checks passed</div></div>
+    <div class="metric"><div class="num" id="m-rejections">1</div><div class="label">Ungranted calls rejected</div><div class="sub">Latest HTTP status <span id="m-rejection-status">403</span></div></div>
+    <div class="metric"><div class="num" id="m-stored">1</div><div class="label">Records stored (documented)</div></div>
+    <div class="metric"><div class="num" id="m-credits">35</div><div class="label">Credits moved to the agent</div><div class="sub"><span id="m-funding-events">4</span> recorded transfers</div></div>
+    <div class="metric"><div class="num" id="m-events">11</div><div class="label">Events in the activity log</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Unique DIDs</h2>
+  <table id="did-table">
+    <tr><th>Role</th><th>DID</th></tr>
+    <tr><td>customer and developer (record owner)</td><td class="did">did:t3n:f93478979727f0f1d3d3f7155232e44e908872af</td></tr>
+    <tr><td>organisation (VaultCheck)</td><td class="did">did:t3n:694f7fffba2811bb0bea2071363025d19bbad373</td></tr>
+    <tr><td>agent (VaultCheck Agent)</td><td class="did">did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Latest check answers</h2>
+  <p class="note">Latest recorded check: <span id="latest-check-ts">2026-11-25T00:42:21Z</span>, run: <span id="latest-check-run">final</span>. Booleans only, no values are ever returned.</p>
+  <table id="answers-table">
+    <tr><th>Rule</th><th>Answer</th></tr>
+    <tr><td><code>account_open_min_months</code></td><td class="answer-true">true</td></tr>
+    <tr><td><code>id_not_expired</code></td><td class="answer-true">true</td></tr>
+    <tr><td><code>kyc_verified</code></td><td class="answer-true">true</td></tr>
+    <tr><td><code>min_age</code></td><td class="answer-true">true</td></tr>
+    <tr><td><code>min_monthly_income_cents</code></td><td class="answer-true">true</td></tr>
+    <tr><td><code>residency_in</code></td><td class="answer-true">true</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Funding ledger sequences</h2>
+  <p>Credits moved from the developer balance to the agent, by ledger sequence: <span class="did" id="ledger-seqs">24792, 24802, 24808, 24814</span>. The first transfer (seq 24792) funded the agent with 5 credits at creation; each later sequence is a 10 credit top up before a check.</p>
+</section>
+
+<section>
+  <h2>Contract and grant</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Contract</td><td class="did" id="contract-name">z:f93478979727f0f1d3d3f7155232e44e908872af:vault</td></tr>
+    <tr><td>Contract ID</td><td id="contract-id">1151</td></tr>
+    <tr><td>Granted function</td><td><code id="grant-function">check</code> only</td></tr>
+    <tr><td>Grant window</td><td><span id="grant-window">90</span> days, <span id="grant-from">2026-11-25T00:42:35Z</span> to <span id="grant-until">2027-02-23T00:42:35Z</span></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Counting rules</h2>
+  <p>This dashboard counts only what the activity log records, and the log was seeded only from STATUS.md and flow-run-final.log:</p>
+  <ol class="steps">
+    <li>A check counts only when a <code>check_passed</code> event with its full answer payload is in the log. So far that is the final run of 25 Nov 2026.</li>
+    <li>Credits count only from <code>agent_funded</code> and <code>agent_topup</code> events that carry a ledger sequence.</li>
+    <li>Top ups at ledger seq 24802 and 24808 show further check activity in earlier runs, but without recorded answer payloads those checks are not counted.</li>
+    <li>If a metric cannot be grounded in a record, it is left out rather than estimated.</li>
+  </ol>
+  <p>Regenerate after appending new events: <code>node desk/build-traction.mjs</code>. See the desk README for the append format.</p>
+</section>
+
+<footer class="site">
+  <p>VaultCheck, Terminal 3 Build+Scale Agent Micro Grant entry. Source: <a href="https://github.com/dunoil/vaultcheck">github.com/dunoil/vaultcheck</a>.</p>
+</footer>
+
+</div>
+
+<script>
+fetch("traction.json")
+  .then(function (r) { if (!r.ok) throw new Error("fetch failed"); return r.json(); })
+  .then(function (t) {
+    function set(id, value) {
+      var el = document.getElementById(id);
+      if (el && value !== null && value !== undefined) el.textContent = value;
+    }
+    set("m-dids", t.unique_did_count);
+    set("m-checks", t.checks_run);
+    set("m-rejections", t.ungranted_calls_rejected);
+    set("m-rejection-status", t.latest_rejection_http_status);
+    set("m-stored", t.records_stored);
+    set("m-credits", t.credits_moved_to_agent);
+    set("m-funding-events", t.funding_events);
+    set("m-events", t.events_total);
+    set("ledger-seqs", (t.funding_ledger_seqs || []).join(", "));
+    if (t.contract) {
+      set("contract-name", t.contract.name);
+      set("contract-id", t.contract.contract_id);
+    }
+    if (t.grant) {
+      set("grant-function", t.grant.function);
+      set("grant-window", t.grant.window_days);
+      set("grant-from", t.grant.valid_from);
+      set("grant-until", t.grant.valid_until);
+    }
+    if (t.latest_check) {
+      set("latest-check-ts", t.latest_check.ts);
+      set("latest-check-run", t.latest_check.run);
+      var table = document.getElementById("answers-table");
+      if (table && t.latest_check.answers) {
+        var rows = "<tr><th>Rule</th><th>Answer</th></tr>";
+        Object.keys(t.latest_check.answers).forEach(function (k) {
+          var v = t.latest_check.answers[k];
+          rows += "<tr><td><code>" + k + "</code></td><td class=\"" +
+            (v ? "answer-true" : "answer-false") + "\">" + v + "</td></tr>";
+        });
+        table.innerHTML = rows;
+      }
+    }
+    var didTable = document.getElementById("did-table");
+    if (didTable && t.unique_dids) {
+      var drows = "<tr><th>Role</th><th>DID</th></tr>";
+      t.unique_dids.forEach(function (d) {
+        drows += "<tr><td>" + (d.role || "participant") + "</td><td class=\"did\">" + d.did + "</td></tr>";
+      });
+      didTable.innerHTML = drows;
+    }
+    set("data-status", "Loaded live from traction.json, generated from activity.jsonl (" + t.events_total + " events).");
+  })
+  .catch(function () {
+    set("data-status", "Could not fetch traction.json from this location (for example when opened as a local file). Showing the last generated values.");
+    function set(id, value) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+  });
+</script>
+</body>
+</html>

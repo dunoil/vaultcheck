@@ -19,7 +19,11 @@ Built for the Terminal 3 Build+Scale Agent Micro Grant on DoraHacks (deadline 24
 
 - quickstart.ts: first authenticated call, prints your did:t3n value.
 - contract: the vault TEE contract (from the Terminal 3 agent-vault-starter reference, adapted for VaultCheck).
-- desk: the eligibility desk service and page (in progress).
+- desk: the eligibility desk page and traction dashboard, built from recorded live runs only.
+
+## Desk and traction
+
+The public desk lives in desk/: index.html is the eligibility desk (identities, contract, latest check answers, grant scope, rejection proof), dashboard.html is the traction dashboard fed by desk/traction.json, which build-traction.mjs regenerates from the append only desk/activity.jsonl. All figures come from recorded live runs only. Once Pages is enabled for this repo, the desk is served at https://dunoil.github.io/vaultcheck/.
 
 ## Status
 

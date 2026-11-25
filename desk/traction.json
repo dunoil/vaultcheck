@@ -1,0 +1,59 @@
+{
+  "generated_from": "activity.jsonl",
+  "basis": "Seeded only from events recorded in STATUS.md and flow-run-final.log. A check counts only when its full answer payload is recorded. No estimates.",
+  "events_total": 11,
+  "unique_dids": [
+    {
+      "did": "did:t3n:f93478979727f0f1d3d3f7155232e44e908872af",
+      "role": "customer and developer (record owner)"
+    },
+    {
+      "did": "did:t3n:694f7fffba2811bb0bea2071363025d19bbad373",
+      "role": "organisation (VaultCheck)"
+    },
+    {
+      "did": "did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2",
+      "role": "agent (VaultCheck Agent)"
+    }
+  ],
+  "unique_did_count": 3,
+  "checks_run": 1,
+  "latest_check": {
+    "ts": "2026-11-25T00:42:21Z",
+    "run": "final",
+    "answers": {
+      "account_open_min_months": true,
+      "id_not_expired": true,
+      "kyc_verified": true,
+      "min_age": true,
+      "min_monthly_income_cents": true,
+      "residency_in": true
+    }
+  },
+  "ungranted_calls_rejected": 1,
+  "latest_rejection_http_status": 403,
+  "records_stored": 1,
+  "credits_moved_to_agent": 35,
+  "funding_events": 4,
+  "funding_ledger_seqs": [
+    24792,
+    24802,
+    24808,
+    24814
+  ],
+  "contract": {
+    "name": "z:f93478979727f0f1d3d3f7155232e44e908872af:vault",
+    "contract_id": 1151,
+    "version": "0.1.0"
+  },
+  "grant": {
+    "grantee_did": "did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2",
+    "function": "check",
+    "scopes": [],
+    "valid_from_secs": 1795567355,
+    "valid_until_secs": 1803343355,
+    "valid_from": "2026-11-25T00:42:35.000Z",
+    "valid_until": "2027-02-23T00:42:35.000Z",
+    "window_days": 90
+  }
+}
