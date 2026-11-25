@@ -9,7 +9,7 @@ The public eligibility desk and traction dashboard for VaultCheck. Static files,
 - `style.css`: shared styling for both pages.
 - `activity.jsonl`: the append only activity log. One JSON object per line. This is the single source the dashboard numbers come from.
 - `traction.json`: generated from `activity.jsonl` by `build-traction.mjs`. Do not edit by hand; regenerate it.
-- `build-traction.mjs`: the generator. Run `node desk/build-traction.mjs` from the repository root after appending events.
+- `build-traction.mjs`: the generator. Run `node docs/build-traction.mjs` from the repository root after appending events.
 
 ## Where the seeded numbers come from
 
@@ -24,7 +24,7 @@ Counting rules, enforced by the generator:
 
 ## Appending new activity (manual format)
 
-`flow.ts` is a proven live flow and is deliberately left untouched. After each future run, append its events to `activity.jsonl` by hand from the run console output, one JSON object per line, then run `node desk/build-traction.mjs` and commit both files.
+`flow.ts` is a proven live flow and is deliberately left untouched. After each future run, append its events to `activity.jsonl` by hand from the run console output, one JSON object per line, then run `node docs/build-traction.mjs` and commit both files.
 
 Event shapes (all timestamps UTC ISO 8601; use the run start when the exact instant inside a run was not recorded):
 
@@ -44,10 +44,10 @@ Rules for appending:
 
 ## Publishing
 
-GitHub Pages cannot serve a `desk/` folder through branch publishing (only the repository root or `docs/`). This repo therefore ships `.github/workflows/pages.yml`, which deploys the `desk/` folder with the official Pages actions. Publishing needs Pages set to the workflow build type once:
+GitHub Pages branch publishing serves only the repository root or `docs/`, so the desk lives in `docs/` and Pages is set to the legacy build type with source main /docs:
 
 ```sh
-gh api repos/dunoil/vaultcheck/pages -X POST -f build_type=workflow
+gh api repos/dunoil/vaultcheck/pages -X PUT -f build_type=legacy -f 'source[branch]=main' -f 'source[path]=/docs'
 ```
 
-After that, every push to the default branch that touches `desk/` redeploys the site at https://dunoil.github.io/vaultcheck/.
+After that, every push to the default branch that touches `docs/` redeploys the site at https://dunoil.github.io/vaultcheck/.
