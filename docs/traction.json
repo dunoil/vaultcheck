@@ -1,26 +1,79 @@
 {
   "generated_from": "activity.jsonl",
-  "basis": "Seeded only from events recorded in STATUS.md and flow-run-final.log. A check counts only when its full answer payload is recorded. No estimates.",
-  "events_total": 11,
+  "basis": "Counted only from events recorded in the activity log (STATUS.md, flow-run-final.log, try.ts runs, and verified external user reports). A check counts only when its full answer payload is recorded. Internal and external DIDs are reported separately. No estimates.",
+  "events_total": 19,
   "unique_dids": [
     {
       "did": "did:t3n:f93478979727f0f1d3d3f7155232e44e908872af",
-      "role": "customer and developer (record owner)"
+      "role": "customer and developer (record owner)",
+      "actor": "internal"
     },
     {
       "did": "did:t3n:694f7fffba2811bb0bea2071363025d19bbad373",
-      "role": "organisation (VaultCheck)"
+      "role": "organisation (VaultCheck)",
+      "actor": "internal"
     },
     {
       "did": "did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2",
-      "role": "agent (VaultCheck Agent)"
+      "role": "agent (VaultCheck Agent)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:1a6231d5463c044c3d2a9ae2eb965708a1be03ef",
+      "role": "organisation (VaultCheck, try.ts test)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
+      "role": "agent (VaultCheck Agent, try.ts test)",
+      "actor": "internal"
     }
   ],
-  "unique_did_count": 3,
-  "checks_run": 1,
+  "unique_did_count": 5,
+  "unique_internal_dids": [
+    {
+      "did": "did:t3n:f93478979727f0f1d3d3f7155232e44e908872af",
+      "role": "customer and developer (record owner)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:694f7fffba2811bb0bea2071363025d19bbad373",
+      "role": "organisation (VaultCheck)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2",
+      "role": "agent (VaultCheck Agent)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:1a6231d5463c044c3d2a9ae2eb965708a1be03ef",
+      "role": "organisation (VaultCheck, try.ts test)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
+      "role": "agent (VaultCheck Agent, try.ts test)",
+      "actor": "internal"
+    }
+  ],
+  "unique_internal_did_count": 5,
+  "unique_external_dids": [],
+  "unique_external_did_count": 0,
+  "onboarding_completions": {
+    "total": 1,
+    "internal": 1,
+    "external": 0
+  },
+  "checks_run": 2,
+  "checks_by_actor": {
+    "total": 2,
+    "internal": 2,
+    "external": 0
+  },
   "latest_check": {
-    "ts": "2026-11-25T00:42:21Z",
-    "run": "final",
+    "ts": "2026-11-25T01:49:15Z",
+    "run": "try-internal",
     "answers": {
       "account_open_min_months": true,
       "id_not_expired": true,
@@ -30,30 +83,35 @@
       "residency_in": true
     }
   },
-  "ungranted_calls_rejected": 1,
+  "ungranted_calls_rejected": 2,
   "latest_rejection_http_status": 403,
-  "records_stored": 1,
-  "credits_moved_to_agent": 35,
-  "funding_events": 4,
+  "records_stored": 2,
+  "credits_moved_to_agent": 40,
+  "funding_events": 5,
   "funding_ledger_seqs": [
     24792,
     24802,
     24808,
-    24814
+    24814,
+    24820
   ],
+  "repeat_usage": {
+    "dids_active_more_than_one_day": 0,
+    "dids": []
+  },
   "contract": {
     "name": "z:f93478979727f0f1d3d3f7155232e44e908872af:vault",
     "contract_id": 1151,
-    "version": "0.1.0"
+    "version": null
   },
   "grant": {
-    "grantee_did": "did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2",
+    "grantee_did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
     "function": "check",
     "scopes": [],
-    "valid_from_secs": 1795567355,
-    "valid_until_secs": 1803343355,
-    "valid_from": "2026-11-25T00:42:35.000Z",
-    "valid_until": "2027-02-23T00:42:35.000Z",
+    "valid_from_secs": 1795571355,
+    "valid_until_secs": 1803347355,
+    "valid_from": "2026-11-25T01:49:15.000Z",
+    "valid_until": "2027-02-23T01:49:15.000Z",
     "window_days": 90
   }
 }

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VaultCheck, Try It Yourself</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="site">
+  <span class="badge">Self serve, about 10 minutes</span>
+  <h1>Try VaultCheck in about 10 minutes</h1>
+  <p class="tag">Run the full VaultCheck pattern under your own Terminal 3 identity, with your own free developer key. No prior knowledge of VaultCheck is assumed. Back to the <a href="index.html">eligibility desk</a> or the <a href="dashboard.html">traction dashboard</a>.</p>
+</header>
+
+<section>
+  <h2>What you will prove</h2>
+  <p>By the end of this guide you will have, on Terminal 3 testnet and under your own DID:</p>
+  <ol class="steps">
+    <li>Registered your own copy of the VaultCheck vault contract, with a private data map that only the contract can read or write.</li>
+    <li>Stored a fictional sample record inside that vault. The raw record never leaves the enclave.</li>
+    <li>Created an agent and granted it exactly one function, <code>check</code>, for 90 days.</li>
+    <li>Watched the agent answer six eligibility rules with one boolean per rule, and no underlying values.</li>
+    <li>Watched the node reject the agent when it tries a function it was not granted (HTTP 403).</li>
+  </ol>
+  <p>One script, <code>try.ts</code>, does all of it. You only bring your own key.</p>
+</section>
+
+<section>
+  <h2>Prerequisites</h2>
+  <ol class="steps">
+    <li><strong>A free Terminal 3 developer key.</strong> Go to <a href="https://www.terminal3.io/claim-page">terminal3.io/claim-page</a>, sign in with Google, and claim a key. The key is shown once and comes with free testnet credits. Copy it somewhere safe for the next step. Never share it, never commit it to git, never paste it into an issue or a chat.</li>
+    <li><strong>Node 20 or newer</strong> and <strong>git</strong> installed.</li>
+    <li><strong>A Rust toolchain with the wasm32-wasip2 target</strong>, only for building the contract WASM once. Install via <a href="https://rustup.rs">rustup</a>, then run <code>rustup target add wasm32-wasip2</code>. If you already have a built <code>agent_vault_starter.wasm</code>, you can skip this and point the script at it instead (see Troubleshooting).</li>
+  </ol>
+</section>
+
+<section>
+  <h2>The steps</h2>
+  <p><strong>Step 1. Clone the repository and install dependencies.</strong></p>
+  <p class="proof-ok">git clone https://github.com/dunoil/vaultcheck.git<br>cd vaultcheck<br>npm install</p>
+  <p><strong>Step 2. Build the vault contract WASM (one time).</strong></p>
+  <p class="proof-ok">cd contract<br>cargo build --release --target wasm32-wasip2<br>cd ..</p>
+  <p><strong>Step 3. Put your key in a local environment file.</strong> Create a file named <code>.env</code> in the repository root with one line. The file is for your machine only.</p>
+  <p class="proof-ok">T3N_API_KEY=your key from the claim page</p>
+  <p><strong>Step 4. Run the onboarding script.</strong></p>
+  <p class="proof-ok">set -a; . ./.env; set +a<br>npx tsx try.ts</p>
+  <p class="note">The script prints numbered steps as it goes: authenticate, register the contract, create the private map, store the sample record, create an organisation and an agent, grant check only, run the check, and attempt the ungranted call. It funds the agent from your testnet balance (5 credits at creation, plus a 10 credit top up only if the check needs it).</p>
+</section>
+
+<section>
+  <h2>What success looks like</h2>
+  <p>The run ends with a summary and a share back line like this one (your DID and contract will differ):</p>
+  <p class="proof-ok">VaultCheck onboarding complete | DID: did:t3n:your-did-here | Contract: z:your-did-here:vault | contract_id: 1234</p>
+  <p>The check result above it shows six booleans, all <span class="answer-true">true</span> for the sample record, and the ungranted call shows a rejection with HTTP 403. If you see both, the pattern worked end to end under your identity.</p>
+</section>
+
+<section>
+  <h2>Report your DID and be counted</h2>
+  <p>Your run only counts as a verified external user on the <a href="dashboard.html">traction dashboard</a> after you report it:</p>
+  <ol class="steps">
+    <li>Open a new issue at <a href="https://github.com/dunoil/vaultcheck/issues">github.com/dunoil/vaultcheck/issues</a>.</li>
+    <li>Paste your share back line (DID plus contract) as the issue text. Nothing else is needed, and never include your API key.</li>
+    <li>We verify the DID and contract against the network record, then add your run to the public activity log as an external onboarding completion.</li>
+  </ol>
+  <p class="note">This verification step is deliberate. The dashboard separates internal DIDs (the project itself) from external DIDs (independent users), and external entries are added only from verified reports, never estimated.</p>
+</section>
+
+<section>
+  <h2>Troubleshooting</h2>
+  <table>
+    <tr><th>Symptom</th><th>What it means and what to do</th></tr>
+    <tr>
+      <td>The granted <code>check</code> returns 403</td>
+      <td>Per the official Terminal 3 walkthrough, a bare 403 on a granted call can also mean the agent is out of credit. <code>try.ts</code> already tops the agent up with 10 credits and retries once. If it still fails, claim or wait for more testnet credits and run again.</td>
+    </tr>
+    <tr>
+      <td>Contract registration says the version is not higher than the current version</td>
+      <td>Your DID already registered this contract in an earlier run. <code>try.ts</code> detects this and continues with your existing contract. Nothing is wrong.</td>
+    </tr>
+    <tr>
+      <td>The WASM file is not found</td>
+      <td>Build it with Step 2 above, or set <code>T3N_WASM_PATH</code> to an existing <code>agent_vault_starter.wasm</code> build before running the script.</td>
+    </tr>
+    <tr>
+      <td><code>T3N_API_KEY is not set</code></td>
+      <td>The environment file was not loaded. Re-run the <code>set -a; . ./.env; set +a</code> line in the same terminal, then run the script again.</td>
+    </tr>
+    <tr>
+      <td>Key safety</td>
+      <td>Your key controls your testnet identity and credits. Keep it only in your local environment. If you ever paste it somewhere public by accident, treat it as compromised and claim a fresh setup.</td>
+    </tr>
+  </table>
+</section>
+
+<footer class="site">
+  <p>VaultCheck is an entry to the Terminal 3 Build+Scale Agent Micro Grant on DoraHacks. Source: <a href="https://github.com/dunoil/vaultcheck">github.com/dunoil/vaultcheck</a>. Demo video: <a href="https://youtu.be/YHL9_15fRVo">youtu.be/YHL9_15fRVo</a>.</p>
+</footer>
+
+</div>
+</body>
+</html>
