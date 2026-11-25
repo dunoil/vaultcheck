@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VaultCheck demo scenes</title>
+<style>
+  :root{
+    --ink:#1c2330; --muted:#5a6a7d; --line:#d9e0e8; --accent:#0f766e;
+    --accent-soft:#e6f4f1; --bad:#b42318; --bad-soft:#fdecea;
+    --mono:ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:#0b0f14; font-family:"Segoe UI",Roboto,"DejaVu Sans",Arial,sans-serif;}
+  .scene{
+    position:relative; width:1920px; height:1080px; overflow:hidden;
+    background:
+      radial-gradient(900px 620px at 300px 880px, rgba(15,118,110,.28), rgba(15,118,110,0) 70%),
+      radial-gradient(1100px 700px at 1650px 120px, rgba(43,84,140,.25), rgba(43,84,140,0) 70%),
+      linear-gradient(150deg,#131b26 0%,#0e141d 60%,#0c1118 100%);
+    color:#eef3f7;
+  }
+  .grid{
+    position:absolute; inset:0; opacity:.05;
+    background-image:linear-gradient(#9fb6c9 1px,transparent 1px),linear-gradient(90deg,#9fb6c9 1px,transparent 1px);
+    background-size:64px 64px;
+  }
+  .kicker{
+    position:absolute; top:64px; left:92px; font-size:25px; font-weight:700;
+    letter-spacing:.22em; color:#2dd4bf; text-transform:uppercase;
+  }
+  .brand{
+    position:absolute; top:58px; right:92px; font-size:24px; color:#9fb6c9;
+    letter-spacing:.08em;
+  }
+  .brand b{color:#eef3f7;}
+  h1{
+    position:absolute; top:106px; left:90px; width:1740px;
+    font-size:64px; line-height:1.12; font-weight:800; color:#ffffff;
+  }
+  .panel{
+    position:absolute; left:700px; top:262px; width:1130px; height:742px;
+    background:#ffffff; color:var(--ink); border-radius:18px;
+    box-shadow:0 30px 80px rgba(0,0,0,.45); padding:40px 44px; overflow:hidden;
+  }
+  .panel h2{font-size:30px; margin-bottom:6px;}
+  .panel .sub{color:var(--muted); font-size:21px; margin-bottom:22px;}
+  table{width:100%; border-collapse:collapse;}
+  th,td{text-align:left; padding:13px 10px; border-bottom:1px solid var(--line); font-size:23px; vertical-align:top;}
+  th{color:var(--muted); font-weight:600; font-size:19px; text-transform:uppercase; letter-spacing:.04em; width:300px;}
+  .mono{font-family:var(--mono); font-size:20px; word-break:break-all;}
+  .mono-sm{font-family:var(--mono); font-size:18px; word-break:break-all;}
+  .chip{
+    display:inline-block; padding:3px 14px; border-radius:999px; font-weight:700; font-size:21px;
+    background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent);
+  }
+  .chip.bad{background:var(--bad-soft); color:var(--bad); border-color:var(--bad);}
+  .term{
+    background:#0d1420; color:#c9e7df; border-radius:12px; padding:20px 24px;
+    font-family:var(--mono); font-size:19px; line-height:1.55; margin-top:24px; word-break:break-all;
+  }
+  .term .dim{color:#7d93a8;}
+  .foot{margin-top:22px; font-size:22px; color:var(--ink); font-weight:600;}
+  .askrow{display:flex; align-items:center; gap:18px; padding:17px 6px; border-bottom:1px solid var(--line); font-size:26px;}
+  .x{
+    flex:0 0 auto; width:38px; height:38px; border-radius:50%; background:var(--bad-soft);
+    color:var(--bad); border:1px solid var(--bad); font-weight:800; text-align:center; line-height:36px; font-size:22px;
+  }
+  .rule{display:flex; align-items:center; gap:16px; padding:12.5px 6px; border-bottom:1px solid var(--line);}
+  .rule .lbl{font-size:24px; font-weight:600; width:430px;}
+  .rule .rn{font-family:var(--mono); font-size:19px; color:var(--muted); flex:1; word-break:break-all;}
+  .stats{display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; margin-top:6px;}
+  .stat{background:var(--accent-soft); border:1px solid var(--accent); border-radius:14px; padding:20px 22px;}
+  .stat .n{font-size:52px; font-weight:800; color:var(--accent); line-height:1;}
+  .stat .t{font-size:20px; color:var(--ink); margin-top:8px; font-weight:600;}
+  .links{margin-top:24px; font-size:23px;}
+  .links .mono{font-size:22px; color:var(--accent); font-weight:700;}
+  .shotframe{margin-top:22px; border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .shotframe img{width:100%; display:block;}
+  .big403{font-size:88px; font-weight:800; color:var(--bad); line-height:1;}
+</style>
+</head>
+<body>
+
+<!-- S1 HOOK -->
+<section class="scene" id="scene1">
+  <div class="grid"></div>
+  <div class="kicker">The problem</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>Eligibility checks have a privacy problem</h1>
+  <div class="panel">
+    <h2>A normal eligibility check asks for</h2>
+    <p class="sub">Shared in plain form, copied, stored, and kept far longer than the check itself.</p>
+    <div class="askrow"><span class="x">✕</span> Your full identity document</div>
+    <div class="askrow"><span class="x">✕</span> Your exact monthly income</div>
+    <div class="askrow"><span class="x">✕</span> Your home address</div>
+    <div class="askrow"><span class="x">✕</span> Your date of birth</div>
+    <p class="foot">All of it, just to answer a yes or no question.</p>
+  </div>
+</section>
+
+<!-- S2 STORE -->
+<section class="scene" id="scene2">
+  <div class="grid"></div>
+  <div class="kicker">Step 1 · Store</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>The record enters the vault, sealed</h1>
+  <div class="panel">
+    <h2>Stored once, inside a TEE vault contract</h2>
+    <p class="sub">Live run on the Terminal 3 testnet, 25 Nov 2026, 00:42 UTC.</p>
+    <table>
+      <tr><th>Contract</th><td class="mono">z:f93478979727f0f1d3d3f7155232e44e908872af:vault</td></tr>
+      <tr><th>Contract ID</th><td>1151 <span style="color:var(--muted)">(version 0.1.0, private vault map)</span></td></tr>
+      <tr><th>Record owner</th><td class="mono">did:t3n:f93478979727f0f1d3d3f7155232e44e908872af</td></tr>
+      <tr><th>Store result</th><td><span class="chip">stored: true</span></td></tr>
+    </table>
+    <div class="term"><span class="dim">[3] Customer stored the example record (Alex Example, fictional).</span><br>store result: {"stored":true}</div>
+    <p class="foot">The raw data never leaves the vault.</p>
+  </div>
+</section>
+
+<!-- S3 GRANT -->
+<section class="scene" id="scene3">
+  <div class="grid"></div>
+  <div class="kicker">Step 2 · Grant</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>One function granted. Nothing else.</h1>
+  <div class="panel">
+    <h2>The agent receives the check function only</h2>
+    <p class="sub">Member delegation, written by the record owner and read back from the network.</p>
+    <table>
+      <tr><th>Grantee</th><td>VaultCheck Agent<br><span class="mono-sm">did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2</span></td></tr>
+      <tr><th>Function</th><td><span class="chip">check</span> <span style="color:var(--muted)">only this function, scopes: none</span></td></tr>
+      <tr><th>Window</th><td>90 days, the platform default<br><span class="mono-sm">25 Nov 2026, 00:42 UTC to 23 Feb 2027, 00:42 UTC</span></td></tr>
+    </table>
+    <div class="term"><span class="dim">Read back via getMemberDelegation:</span><br>{"grantee":"did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2","function":"check","scopes":[],"window":{"valid_from_secs":1795567355,"valid_until_secs":1803343355}}</div>
+    <p class="foot">The agent cannot read the record. It cannot even open the vault.</p>
+  </div>
+</section>
+
+<!-- S4 CHECK -->
+<section class="scene" id="scene4">
+  <div class="grid"></div>
+  <div class="kicker">Step 3 · Check</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>Questions in. Booleans out.</h1>
+  <div class="panel">
+    <h2>Six rules, six answers, booleans only</h2>
+    <p class="sub">The agent asked, the vault answered. No values were returned.</p>
+    <div class="rule"><span class="lbl">Identity verified</span><span class="rn">kyc_verified</span><span class="chip">true</span></div>
+    <div class="rule"><span class="lbl">ID not expired</span><span class="rn">id_not_expired</span><span class="chip">true</span></div>
+    <div class="rule"><span class="lbl">Age at least 18</span><span class="rn">min_age</span><span class="chip">true</span></div>
+    <div class="rule"><span class="lbl">Residency in GB or IE</span><span class="rn">residency_in</span><span class="chip">true</span></div>
+    <div class="rule"><span class="lbl">Income floor, 300000 cents</span><span class="rn">min_monthly_income_cents</span><span class="chip">true</span></div>
+    <div class="rule"><span class="lbl">Account open 12+ months</span><span class="rn">account_open_min_months</span><span class="chip">true</span></div>
+    <div class="term">check result: {"answers":{"account_open_min_months":true,"id_not_expired":true,"kyc_verified":true,"min_age":true,"min_monthly_income_cents":true,"residency_in":true}}</div>
+  </div>
+</section>
+
+<!-- S5 REJECTION -->
+<section class="scene" id="scene5">
+  <div class="grid"></div>
+  <div class="kicker">The boundary holds</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>No grant, no entry</h1>
+  <div class="panel" style="border:3px solid var(--bad);">
+    <h2>The same agent tried a function it was never granted</h2>
+    <p class="sub">Ungranted call, attempted in the same live run, right after the granted check succeeded.</p>
+    <table>
+      <tr><th>Agent called</th><td class="mono">store</td></tr>
+      <tr><th>Grant for store</th><td><span class="chip bad">none</span></td></tr>
+      <tr><th>Network response</th><td><span class="big403">HTTP 403</span></td></tr>
+    </table>
+    <div class="term">rejection: InvokeError: invoke request failed: server returned HTTP 403 (status 403)</div>
+    <p class="foot">Refused by the node before the contract ran. Enforced by the network, not by policy.</p>
+  </div>
+</section>
+
+<!-- S6 TRACTION AND CLOSE -->
+<section class="scene" id="scene6">
+  <div class="grid"></div>
+  <div class="kicker">Traction · VaultCheck</div>
+  <div class="brand"><b>VaultCheck</b> · Terminal 3</div>
+  <h1>Live on testnet, open for inspection</h1>
+  <div class="panel">
+    <h2>Recorded activity, counted from the run logs</h2>
+    <p class="sub">Every figure below comes from the public traction dashboard, which counts recorded events only.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">3</div><div class="t">Unique DIDs took part</div></div>
+      <div class="stat"><div class="n">1</div><div class="t">Documented check passed, six rules true</div></div>
+      <div class="stat"><div class="n">1</div><div class="t">Ungranted call rejected, HTTP 403</div></div>
+      <div class="stat"><div class="n">35</div><div class="t">Credits moved to the agent</div></div>
+      <div class="stat"><div class="n">4</div><div class="t">Funding entries on the ledger</div></div>
+      <div class="stat"><div class="n">1</div><div class="t">Record stored in the vault</div></div>
+    </div>
+    <div class="links">Code: <span class="mono">github.com/dunoil/vaultcheck</span><br>
+    Desk and dashboard: <span class="mono">dunoil.github.io/vaultcheck</span></div>
+    <div class="shotframe"><img src="dashboard-top.png" alt="VaultCheck traction dashboard"></div>
+  </div>
+</section>
+
+</body>
+</html>
