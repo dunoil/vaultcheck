@@ -24,8 +24,8 @@ One platform behaviour worth knowing: a bare 403 on a granted call can also mean
 ## Prerequisites
 
 - A free Terminal 3 developer key from https://www.terminal3.io/claim-page (sign in with Google, key shown once, comes with free testnet credits). Keep it in your shell environment or a local `.env` file only. Never commit it.
-- Node 20 or newer and git.
-- Only for building the contract WASM yourself: a Rust toolchain with the `wasm32-wasip2` target (`rustup target add wasm32-wasip2`).
+- Node 20 or newer and git. Nothing else for `try.ts`: it downloads the prebuilt vault contract from this repository's GitHub release v0.1.0 automatically when no local build exists.
+- Only for building the contract WASM yourself (or for the recorded demo flow below, which reads the WASM from the local build path): a Rust toolchain with the `wasm32-wasip2` target (`rustup target add wasm32-wasip2`). Instead of building, you can also download the release asset `agent_vault_starter.wasm` and save it at `contract/target/wasm32-wasip2/release/agent_vault_starter.wasm`.
 
 ## Quickstart: the recorded demo flow
 
@@ -63,7 +63,7 @@ set -a; . ./.env; set +a
 npx tsx try.ts
 ```
 
-It registers your own copy of the contract under your DID, creates the private map, stores the fictional sample record from `contract/examples/customer.json`, creates your organisation and agent, grants `check` only, runs the check with `contract/examples/rules.json`, and attempts the ungranted call so you can see the rejection. At the end it prints a summary line with your DID and contract.
+No build step and no Rust toolchain: on the first run the script downloads the prebuilt vault contract from the GitHub release v0.1.0, checks its WASM header, and saves it to the local build path for reuse. A local build, or a file named by `T3N_WASM_PATH`, takes precedence. Run `npx tsx try.ts --help` for the full usage text. The script then registers your own copy of the contract under your DID, creates the private map, stores the fictional sample record from `contract/examples/customer.json`, creates your organisation and agent, grants `check` only, runs the check with `contract/examples/rules.json`, and attempts the ungranted call so you can see the rejection. At the end it prints a summary line with your DID and contract.
 
 The guided version, with what success looks like, troubleshooting, and key safety notes, is the [try page](https://dunoil.github.io/vaultcheck/try.html). To be counted as a verified external user on the traction dashboard, open a GitHub issue on this repository with your summary line (DID plus contract, never your key). We verify it, then record your run in the public activity log as an external onboarding completion.
 
@@ -72,8 +72,8 @@ The guided version, with what success looks like, troubleshooting, and key safet
 Every figure below comes from recorded live runs on Terminal 3 testnet, logged in `docs/activity.jsonl` and summarised on the [traction dashboard](https://dunoil.github.io/vaultcheck/dashboard.html). Nothing is estimated.
 
 - Contract `z:f93478979727f0f1d3d3f7155232e44e908872af:vault`, contract_id 1151, version 0.1.0, registered live on 25 Nov 2026.
-- 5 unique DIDs recorded so far, all internal (see Traction below). 2 documented checks passed with full answer payloads, the latest answering all six rules true: `{"answers":{"account_open_min_months":true,"id_not_expired":true,"kyc_verified":true,"min_age":true,"min_monthly_income_cents":true,"residency_in":true}}`.
-- 2 ungranted calls rejected with HTTP 403. 2 records stored. 40 credits moved to agents across 5 recorded ledger transfers (seq 24792, 24802, 24808, 24814, 24820).
+- 7 unique DIDs recorded so far, all internal (see Traction below). 3 documented checks passed with full answer payloads, the latest answering all six rules true: `{"answers":{"account_open_min_months":true,"id_not_expired":true,"kyc_verified":true,"min_age":true,"min_monthly_income_cents":true,"residency_in":true}}`.
+- 3 ungranted calls rejected with HTTP 403. 3 records stored. 45 credits moved to agents across 6 recorded ledger transfers (seq 24792, 24802, 24808, 24814, 24820, 24828).
 - Grant read back from the platform: function `check` only, scopes none, window exactly 90 days.
 - The full final demo run is preserved in `flow-run-final.log` in this repository.
 
@@ -92,7 +92,7 @@ Traction for this grant is measured by credits consumed across unique DIDs, so t
 - **External DIDs** are independent users who ran the flow under their own key and reported a verifiable result. An external DID enters the log only after the reported DID and contract are verified, via the GitHub issue flow described above.
 - The dashboard also reports onboarding completions, checks passed, rejected ungranted calls, records stored, credits moved to agents, and repeat usage (DIDs active on more than one UTC day), each counted only from recorded events.
 
-Current state: 5 internal DIDs, 0 external DIDs, 1 internal onboarding completion (the `try.ts` self test). The gap between those numbers is exactly what this phase of the project is working to close, with real users only.
+Current state: 7 internal DIDs, 0 external DIDs, 2 internal onboarding completions (the `try.ts` self tests, one of them through the no Rust download path). The gap between those numbers is exactly what this phase of the project is working to close, with real users only.
 
 ## Layout
 

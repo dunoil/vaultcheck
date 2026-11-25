@@ -19,16 +19,16 @@
 <section>
   <h2>Headline metrics</h2>
   <div class="grid">
-    <div class="metric"><div class="num" id="m-dids">5</div><div class="label">Unique DIDs involved</div></div>
-    <div class="metric"><div class="num" id="m-dids-internal">5</div><div class="label">Unique internal DIDs</div><div class="sub">The VaultCheck project itself</div></div>
+    <div class="metric"><div class="num" id="m-dids">7</div><div class="label">Unique DIDs involved</div></div>
+    <div class="metric"><div class="num" id="m-dids-internal">7</div><div class="label">Unique internal DIDs</div><div class="sub">The VaultCheck project itself</div></div>
     <div class="metric"><div class="num" id="m-dids-external">0</div><div class="label">Unique external DIDs</div><div class="sub">Independent users, counted only from verified reports</div></div>
-    <div class="metric"><div class="num" id="m-onboarding">1</div><div class="label">Onboarding completions</div><div class="sub"><span id="m-onboarding-internal">1</span> internal, <span id="m-onboarding-external">0</span> external</div></div>
-    <div class="metric"><div class="num" id="m-checks">2</div><div class="label">Documented checks passed</div></div>
-    <div class="metric"><div class="num" id="m-rejections">2</div><div class="label">Ungranted calls rejected</div><div class="sub">Latest HTTP status <span id="m-rejection-status">403</span></div></div>
-    <div class="metric"><div class="num" id="m-stored">2</div><div class="label">Records stored (documented)</div></div>
-    <div class="metric"><div class="num" id="m-credits">40</div><div class="label">Credits moved to agents</div><div class="sub"><span id="m-funding-events">5</span> recorded transfers</div></div>
+    <div class="metric"><div class="num" id="m-onboarding">2</div><div class="label">Onboarding completions</div><div class="sub"><span id="m-onboarding-internal">2</span> internal, <span id="m-onboarding-external">0</span> external</div></div>
+    <div class="metric"><div class="num" id="m-checks">3</div><div class="label">Documented checks passed</div></div>
+    <div class="metric"><div class="num" id="m-rejections">3</div><div class="label">Ungranted calls rejected</div><div class="sub">Latest HTTP status <span id="m-rejection-status">403</span></div></div>
+    <div class="metric"><div class="num" id="m-stored">3</div><div class="label">Records stored (documented)</div></div>
+    <div class="metric"><div class="num" id="m-credits">45</div><div class="label">Credits moved to agents</div><div class="sub"><span id="m-funding-events">6</span> recorded transfers</div></div>
     <div class="metric"><div class="num" id="m-repeat">0</div><div class="label">DIDs active on more than one day</div><div class="sub">Repeat usage, by UTC day</div></div>
-    <div class="metric"><div class="num" id="m-events">19</div><div class="label">Events in the activity log</div></div>
+    <div class="metric"><div class="num" id="m-events">27</div><div class="label">Events in the activity log</div></div>
   </div>
 </section>
 
@@ -41,13 +41,15 @@
     <tr><td>internal</td><td>agent (VaultCheck Agent)</td><td class="did">did:t3n:3a38055eafa288530d95e47944d8e9633c7e3be2</td></tr>
     <tr><td>internal</td><td>organisation (VaultCheck, try.ts test)</td><td class="did">did:t3n:1a6231d5463c044c3d2a9ae2eb965708a1be03ef</td></tr>
     <tr><td>internal</td><td>agent (VaultCheck Agent, try.ts test)</td><td class="did">did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b</td></tr>
+    <tr><td>internal</td><td>organisation (VaultCheck, try.ts no Rust test)</td><td class="did">did:t3n:82393898cfacd92574eb90dbd299a0a81f483667</td></tr>
+    <tr><td>internal</td><td>agent (VaultCheck Agent, try.ts no Rust test)</td><td class="did">did:t3n:ccf96a9f4f573290e0590221299deed1e9fa4d4e</td></tr>
   </table>
   <p class="note">Internal means the VaultCheck project itself: our developer account, our organisations, our agents. External means an independent user who ran the flow under their own key and reported a verifiable result. The two are never merged into one adoption number.</p>
 </section>
 
 <section>
   <h2>Latest check answers</h2>
-  <p class="note">Latest recorded check: <span id="latest-check-ts">2026-11-25T01:49:15Z</span>, run: <span id="latest-check-run">try-internal</span>. Booleans only, no values are ever returned.</p>
+  <p class="note">Latest recorded check: <span id="latest-check-ts">2026-11-25T01:57:14Z</span>, run: <span id="latest-check-run">try-norust</span>. Booleans only, no values are ever returned.</p>
   <table id="answers-table">
     <tr><th>Rule</th><th>Answer</th></tr>
     <tr><td><code>account_open_min_months</code></td><td class="answer-true">true</td></tr>
@@ -61,7 +63,7 @@
 
 <section>
   <h2>Funding ledger sequences</h2>
-  <p>Credits moved from developer balances to agents, by ledger sequence: <span class="did" id="ledger-seqs">24792, 24802, 24808, 24814, 24820</span>. The first transfer (seq 24792) funded the agent with 5 credits at creation; each later sequence is a 10 credit top up before a check, except seq 24820, which funded the try.ts test agent with 5 credits at creation.</p>
+  <p>Credits moved from developer balances to agents, by ledger sequence: <span class="did" id="ledger-seqs">24792, 24802, 24808, 24814, 24820, 24828</span>. The first transfer (seq 24792) funded the agent with 5 credits at creation; seq 24802, 24808 and 24814 are 10 credit top ups before checks, and seq 24820 and 24828 each funded a try.ts test agent with 5 credits at creation.</p>
 </section>
 
 <section>
@@ -71,7 +73,7 @@
     <tr><td>Contract</td><td class="did" id="contract-name">z:f93478979727f0f1d3d3f7155232e44e908872af:vault</td></tr>
     <tr><td>Contract ID</td><td id="contract-id">1151</td></tr>
     <tr><td>Granted function</td><td><code id="grant-function">check</code> only</td></tr>
-    <tr><td>Grant window</td><td><span id="grant-window">90</span> days, <span id="grant-from">2026-11-25T00:42:35Z</span> to <span id="grant-until">2027-02-23T00:42:35Z</span></td></tr>
+    <tr><td>Grant window</td><td><span id="grant-window">90</span> days, <span id="grant-from">2026-11-25T01:57:37Z</span> to <span id="grant-until">2027-02-23T01:57:37Z</span></td></tr>
   </table>
 </section>
 
@@ -79,7 +81,7 @@
   <h2>Counting rules</h2>
   <p>This dashboard counts only what the activity log records, and the log was seeded only from STATUS.md and flow-run-final.log:</p>
   <ol class="steps">
-    <li>A check counts only when a <code>check_passed</code> event with its full answer payload is in the log. So far that is the final run of 25 Nov 2026.</li>
+    <li>A check counts only when a <code>check_passed</code> event with its full answer payload is in the log.</li>
     <li>Credits count only from <code>agent_funded</code> and <code>agent_topup</code> events that carry a ledger sequence.</li>
     <li>Top ups at ledger seq 24802 and 24808 show further check activity in earlier runs, but without recorded answer payloads those checks are not counted.</li>
     <li>If a metric cannot be grounded in a record, it is left out rather than estimated.</li>

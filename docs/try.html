@@ -32,8 +32,8 @@
   <h2>Prerequisites</h2>
   <ol class="steps">
     <li><strong>A free Terminal 3 developer key.</strong> Go to <a href="https://www.terminal3.io/claim-page">terminal3.io/claim-page</a>, sign in with Google, and claim a key. The key is shown once and comes with free testnet credits. Copy it somewhere safe for the next step. Never share it, never commit it to git, never paste it into an issue or a chat.</li>
-    <li><strong>Node 20 or newer</strong> and <strong>git</strong> installed.</li>
-    <li><strong>A Rust toolchain with the wasm32-wasip2 target</strong>, only for building the contract WASM once. Install via <a href="https://rustup.rs">rustup</a>, then run <code>rustup target add wasm32-wasip2</code>. If you already have a built <code>agent_vault_starter.wasm</code>, you can skip this and point the script at it instead (see Troubleshooting).</li>
+    <li><strong>Node 20 or newer</strong> and <strong>git</strong> installed. That is all: no Rust toolchain is needed, because the script downloads the prebuilt vault contract from the VaultCheck GitHub release automatically.</li>
+    <li><strong>Optional, only for rebuilding the contract yourself:</strong> a Rust toolchain with the wasm32-wasip2 target (via <a href="https://rustup.rs">rustup</a>, then <code>rustup target add wasm32-wasip2</code>). A local build is used in preference to the download when one exists.</li>
   </ol>
 </section>
 
@@ -41,12 +41,11 @@
   <h2>The steps</h2>
   <p><strong>Step 1. Clone the repository and install dependencies.</strong></p>
   <p class="proof-ok">git clone https://github.com/dunoil/vaultcheck.git<br>cd vaultcheck<br>npm install</p>
-  <p><strong>Step 2. Build the vault contract WASM (one time).</strong></p>
-  <p class="proof-ok">cd contract<br>cargo build --release --target wasm32-wasip2<br>cd ..</p>
-  <p><strong>Step 3. Put your key in a local environment file.</strong> Create a file named <code>.env</code> in the repository root with one line. The file is for your machine only.</p>
+  <p><strong>Step 2. Put your key in a local environment file.</strong> Create a file named <code>.env</code> in the repository root with one line. The file is for your machine only.</p>
   <p class="proof-ok">T3N_API_KEY=your key from the claim page</p>
-  <p><strong>Step 4. Run the onboarding script.</strong></p>
+  <p><strong>Step 3. Run the onboarding script.</strong></p>
   <p class="proof-ok">set -a; . ./.env; set +a<br>npx tsx try.ts</p>
+  <p class="note">There is no build step. On the first run the script downloads the prebuilt vault contract (220,578 bytes) from the <a href="https://github.com/dunoil/vaultcheck/releases/tag/v0.1.0">VaultCheck GitHub release v0.1.0</a>, checks its WASM header, and saves it locally for later runs. If you already built the contract yourself, your local build is used instead.</p>
   <p class="note">The script prints numbered steps as it goes: authenticate, register the contract, create the private map, store the sample record, create an organisation and an agent, grant check only, run the check, and attempt the ungranted call. It funds the agent from your testnet balance (5 credits at creation, plus a 10 credit top up only if the check needs it).</p>
 </section>
 
@@ -81,8 +80,8 @@
       <td>Your DID already registered this contract in an earlier run. <code>try.ts</code> detects this and continues with your existing contract. Nothing is wrong.</td>
     </tr>
     <tr>
-      <td>The WASM file is not found</td>
-      <td>Build it with Step 2 above, or set <code>T3N_WASM_PATH</code> to an existing <code>agent_vault_starter.wasm</code> build before running the script.</td>
+      <td>The WASM download fails, or the WASM file is not found</td>
+      <td>The script downloads the prebuilt contract from the GitHub release automatically and says so in Step 2 of its output. If the download fails (for example offline), the script prints the fallback: build it yourself with <code>rustup target add wasm32-wasip2</code> and <code>cargo build --release --target wasm32-wasip2</code> inside <code>contract/</code>, or download the asset manually and set <code>T3N_WASM_PATH</code> to its location.</td>
     </tr>
     <tr>
       <td><code>T3N_API_KEY is not set</code></td>

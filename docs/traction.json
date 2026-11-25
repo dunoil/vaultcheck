@@ -1,7 +1,7 @@
 {
   "generated_from": "activity.jsonl",
   "basis": "Counted only from events recorded in the activity log (STATUS.md, flow-run-final.log, try.ts runs, and verified external user reports). A check counts only when its full answer payload is recorded. Internal and external DIDs are reported separately. No estimates.",
-  "events_total": 19,
+  "events_total": 27,
   "unique_dids": [
     {
       "did": "did:t3n:f93478979727f0f1d3d3f7155232e44e908872af",
@@ -27,9 +27,19 @@
       "did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
       "role": "agent (VaultCheck Agent, try.ts test)",
       "actor": "internal"
+    },
+    {
+      "did": "did:t3n:82393898cfacd92574eb90dbd299a0a81f483667",
+      "role": "organisation (VaultCheck, try.ts no Rust test)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:ccf96a9f4f573290e0590221299deed1e9fa4d4e",
+      "role": "agent (VaultCheck Agent, try.ts no Rust test)",
+      "actor": "internal"
     }
   ],
-  "unique_did_count": 5,
+  "unique_did_count": 7,
   "unique_internal_dids": [
     {
       "did": "did:t3n:f93478979727f0f1d3d3f7155232e44e908872af",
@@ -55,25 +65,35 @@
       "did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
       "role": "agent (VaultCheck Agent, try.ts test)",
       "actor": "internal"
+    },
+    {
+      "did": "did:t3n:82393898cfacd92574eb90dbd299a0a81f483667",
+      "role": "organisation (VaultCheck, try.ts no Rust test)",
+      "actor": "internal"
+    },
+    {
+      "did": "did:t3n:ccf96a9f4f573290e0590221299deed1e9fa4d4e",
+      "role": "agent (VaultCheck Agent, try.ts no Rust test)",
+      "actor": "internal"
     }
   ],
-  "unique_internal_did_count": 5,
+  "unique_internal_did_count": 7,
   "unique_external_dids": [],
   "unique_external_did_count": 0,
   "onboarding_completions": {
-    "total": 1,
-    "internal": 1,
-    "external": 0
-  },
-  "checks_run": 2,
-  "checks_by_actor": {
     "total": 2,
     "internal": 2,
     "external": 0
   },
+  "checks_run": 3,
+  "checks_by_actor": {
+    "total": 3,
+    "internal": 3,
+    "external": 0
+  },
   "latest_check": {
-    "ts": "2026-11-25T01:49:15Z",
-    "run": "try-internal",
+    "ts": "2026-11-25T01:57:14Z",
+    "run": "try-norust",
     "answers": {
       "account_open_min_months": true,
       "id_not_expired": true,
@@ -83,17 +103,18 @@
       "residency_in": true
     }
   },
-  "ungranted_calls_rejected": 2,
+  "ungranted_calls_rejected": 3,
   "latest_rejection_http_status": 403,
-  "records_stored": 2,
-  "credits_moved_to_agent": 40,
-  "funding_events": 5,
+  "records_stored": 3,
+  "credits_moved_to_agent": 45,
+  "funding_events": 6,
   "funding_ledger_seqs": [
     24792,
     24802,
     24808,
     24814,
-    24820
+    24820,
+    24828
   ],
   "repeat_usage": {
     "dids_active_more_than_one_day": 0,
@@ -105,13 +126,13 @@
     "version": null
   },
   "grant": {
-    "grantee_did": "did:t3n:3ed8e300b2f2d5f213f7e5db51dbfd087d3f4e6b",
+    "grantee_did": "did:t3n:ccf96a9f4f573290e0590221299deed1e9fa4d4e",
     "function": "check",
     "scopes": [],
-    "valid_from_secs": 1795571355,
-    "valid_until_secs": 1803347355,
-    "valid_from": "2026-11-25T01:49:15.000Z",
-    "valid_until": "2027-02-23T01:49:15.000Z",
+    "valid_from_secs": 1795571857,
+    "valid_until_secs": 1803347857,
+    "valid_from": "2026-11-25T01:57:37.000Z",
+    "valid_until": "2027-02-23T01:57:37.000Z",
     "window_days": 90
   }
 }
