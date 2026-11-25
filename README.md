@@ -77,6 +77,10 @@ Every figure below comes from recorded live runs on Terminal 3 testnet, logged i
 - Grant read back from the platform: function `check` only, scopes none, window exactly 90 days.
 - The full final demo run is preserved in `flow-run-final.log` in this repository.
 
+The live traction dashboard, captured on 25 Nov 2026 after the figures were regenerated from the activity log (27 events, 7 internal DIDs, 0 external DIDs, 45 credits moved):
+
+![VaultCheck traction dashboard, live capture](docs/assets/traction-dashboard.png)
+
 ## Security model
 
 - The agent's authority is a single function grant on a single contract, issued by the record owner and revocable through the same delegation mechanism. Least privilege is enforced by the node, not by the agent's good behaviour.

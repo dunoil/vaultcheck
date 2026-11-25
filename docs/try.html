@@ -54,6 +54,9 @@
   <p>The run ends with a summary and a share back line like this one (your DID and contract will differ):</p>
   <p class="proof-ok">VaultCheck onboarding complete | DID: did:t3n:your-did-here | Contract: z:your-did-here:vault | contract_id: 1234</p>
   <p>The check result above it shows six booleans, all <span class="answer-true">true</span> for the sample record, and the ungranted call shows a rejection with HTTP 403. If you see both, the pattern worked end to end under your identity.</p>
+  <p>Your run is then verified into the public record on the <a href="dashboard.html">traction dashboard</a>. This is a real capture of that live dashboard, taken on 25 Nov 2026 after the figures were regenerated from the activity log:</p>
+  <p><img class="evidence" src="assets/traction-dashboard.png" alt="Screenshot of the live VaultCheck traction dashboard showing headline metrics, the DID table with the internal and external split, the latest check answers, funding ledger sequences, and the counting rules."></p>
+  <p class="note">Every number in the capture comes from the append only activity log. Internal and external DIDs are always shown separately.</p>
 </section>
 
 <section>
